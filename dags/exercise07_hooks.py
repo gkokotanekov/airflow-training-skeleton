@@ -27,7 +27,7 @@ args = {
 }
 
 dag = DAG(
-    dag_id='example09',
+    dag_id='example10',
     default_args=args,
     # schedule_interval='0 0 * * *' ## every day
     schedule_interval='@daily' ## every day
@@ -39,7 +39,7 @@ dag = DAG(
 
 get_data = PostgresToGoogleCloudStorageOperator(
     task_id='get_data',
-    filename= 'gdk_data',
+    filename= '{{ds}}/gdk_data{}.json',
     bucket = 'gkokotanekov_airflow_training',
     postgres_conn_id = 'gddconnection',
     google_cloud_storage_conn_id = 'google_cloud_storage_default',
