@@ -43,5 +43,5 @@ get_data = PostgresToGoogleCloudStorageOperator(
     bucket = 'gkokotanekov_airflow_training',
     postgres_conn_id = 'gddconnection',
     google_cloud_storage_conn_id = 'google_cloud_storage_default',
-    sql = 'select transfer_date FROM land_registry_price_paid_uk WHERE transfer_date = "{{ execution_date.strftime("%d-%m-%Y") }}"',
+    sql = "select transfer_date FROM land_registry_price_paid_uk WHERE transfer_date = '{{ execution_date.strftime('%d-%m-%Y') }}'",
     dag=dag)
