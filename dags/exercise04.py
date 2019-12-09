@@ -44,8 +44,10 @@ for i in sleep_values:
         bash_command="sleep " + str(i),
         dag=dag,
     )
-    # wait >> the_end
 
 
-print_exec_date >> wait >> the_end
+    print_exec_date >> wait >> the_end
+
+
+
 
