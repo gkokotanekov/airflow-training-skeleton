@@ -35,7 +35,7 @@ print_exec_date = PythonOperator(
     dag=dag,
 )
 
-the_end = DummyOperator(task_id="do_sth_05", dag=dag)
+the_end = DummyOperator(task_id="the_end", dag=dag)
 
 sleep_values = [5, 1, 10]
 for i in sleep_values:
@@ -44,27 +44,7 @@ for i in sleep_values:
         bash_command="sleep " + str(i),
         dag=dag,
     )
-    wait >> the_end
-
-# wait_5 = BashOperator(
-#     task_id='sleep_5',
-#     bash_command='sleep 5',
-#     retries=3,
-#     dag=dag)
-#
-# wait_1 = BashOperator(
-#     task_id='sleep_1',
-#     bash_command='sleep 1',
-#     retries=3,
-#     dag=dag)
-#
-# wait_10 = BashOperator(
-#     task_id='sleep_10',
-#     bash_command='sleep 10',
-#     retries=3,
-#     dag=dag)
-
-
+    # wait >> the_end
 
 
 print_exec_date >> wait >> the_end
