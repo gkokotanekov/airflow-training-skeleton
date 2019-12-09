@@ -41,7 +41,7 @@ sleep_values = [5, 1, 10]
 for i in sleep_values:
     wait = BashOperator(
         task_id='sleep_' + str(i),
-        bash_command="sleep_"+'{{i}}',
+        bash_command="sleep " + str(i),
         dag=dag,
     )
     wait >> the_end
@@ -67,5 +67,5 @@ for i in sleep_values:
 
 
 
-print_exec_date >> [wait_5, wait_1, wait_10] >> the_end
+print_exec_date >> wait >> the_end
 
