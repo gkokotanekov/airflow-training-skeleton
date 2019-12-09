@@ -2,7 +2,6 @@ from datetime import timedelta, datetime
 
 import airflow
 from airflow.models import DAG
-from airflow.operators.bash_operator import BashOperator
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.python_operator import PythonOperator, BranchPythonOperator
 
@@ -16,6 +15,7 @@ def return_branch():
 
 days_back = 5
 
+# noinspection PyUnresolvedReferences
 args = {
     'owner': 'Airflow',
     'start_date': airflow.utils.dates.days_ago(days_back),
@@ -44,7 +44,7 @@ final_task = DummyOperator(task_id="final_task",
 
 branching = BranchPythonOperator(
     task_id='branching',
-    python_callable=return_branch(),
+    python_callable=return_branch,
     provide_context=True)
 
 people = ['bob', 'alice', 'joe']
