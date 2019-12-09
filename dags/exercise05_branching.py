@@ -18,7 +18,7 @@ days_back = 5
 # noinspection PyUnresolvedReferences
 args = {
     'owner': 'Airflow',
-    'start_date': airflow.utils.dates.days_ago(days_back),
+    'start_date': airflow.utils.dates.days_ago(5),
     'dagrun_timeout': timedelta(minutes=60)
 }
 
@@ -45,7 +45,8 @@ final_task = DummyOperator(task_id="final_task",
 branching = BranchPythonOperator(
     task_id='branching',
     python_callable=return_branch,
-    provide_context=True)
+    provide_context=True,
+    dag=dag)
 
 people = ['bob', 'alice', 'joe']
 emails_tasks_array = []
