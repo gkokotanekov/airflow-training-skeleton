@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 import airflow
 from airflow.models import DAG
@@ -9,7 +9,7 @@ from airflow.operators.dummy_operator import DummyOperator
 args = {
     'owner': 'Airflow',
     'start_date': datetime(2019, 10, 1),
-    dagrun_timeout=timedelta(minutes=60)
+    'dagrun_timeout': timedelta(minutes=60)
 }
 
 dag = DAG(
