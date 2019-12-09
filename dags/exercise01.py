@@ -13,7 +13,7 @@ args = {
 
 dag = DAG(
     dag_id='example01',
-    default_args=args,
+    default_args=args
 )
 
 t1 = DummyOperator(task_id="do_sth_01", dag=dag)
