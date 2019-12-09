@@ -38,6 +38,7 @@ dag = DAG(
 
 get_data = PostgresToGoogleCloudStorageOperator(
     task_id='get_data',
+    filename= 'gdk_data'
     bucket = 'gkokotanekov_airflow_training',
     postgres_conn_id = 'gddconnection',
     google_cloud_storage_conn_id = 'google_cloud_storage_default',
