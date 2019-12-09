@@ -39,7 +39,7 @@ print_weekday = PythonOperator(
     dag=dag,
 )
 
-final_task = BashOperator(task_id="final_task",
+final_task = DummyOperator(task_id="final_task",
                           dag=dag)
 
 branching = BranchPythonOperator(
