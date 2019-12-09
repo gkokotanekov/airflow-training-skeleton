@@ -7,11 +7,11 @@ from airflow.operators.python_operator import PythonOperator, BranchPythonOperat
 
 
 def _print_weekday(**context):
-    print(datetime.today().weekday())
+    print(context["execution_date"].weekday())
 
-def return_branch():
+def return_branch(**context):
     branches = {1: 'email_bob', 2: 'email_alice', 3: 'email_joe', 4: 'email_joe', 5: 'email_alice', 6: 'email_joe', 0: 'email_bob'}
-    return branches[datetime.today().weekday()]
+    return branches[context["execution_date"].weekday()]
 
 days_back = 5
 
