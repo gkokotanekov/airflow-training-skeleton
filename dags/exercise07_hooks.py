@@ -1,11 +1,11 @@
 from datetime import timedelta, datetime
 
 import airflow
+from airflow.contrib.operators.postgres_to_gcs_operator import PostgresToGoogleCloudStorageOperator
 from airflow.models import DAG
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.python_operator import PythonOperator, BranchPythonOperator
 
-from airflow.operators.postgres_to_gcs import PostgresToGoogleCloudStorageOperator
 
 ## bucket
 ## gkokotanekov_airflow_training
