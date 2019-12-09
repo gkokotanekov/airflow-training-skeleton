@@ -13,9 +13,11 @@ args = {
 }
 
 dag = DAG(
-    dag_id='example02',
+    dag_id='example03',
     default_args=args,
-    schedule_interval='0 0 * * *'
+    # schedule_interval='0 0 * * *' ## every day
+    schedule_interval='45 13 * *  MON,WED,FRI' ## every day
+
 )
 
 t1 = DummyOperator(task_id="do_sth_01", dag=dag)
