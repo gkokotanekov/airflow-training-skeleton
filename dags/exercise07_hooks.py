@@ -19,6 +19,7 @@ def return_branch(**context):
     return branches[context["execution_date"].weekday()]
 
 
+# noinspection PyUnresolvedReferences
 args = {
     'owner': 'Airflow',
     'start_date': airflow.utils.dates.days_ago(5),
@@ -38,43 +39,9 @@ dag = DAG(
 
 get_data = PostgresToGoogleCloudStorageOperator(
     task_id='get_data',
-    filename= 'gdk_data'
+    filename= 'gdk_data',
     bucket = 'gkokotanekov_airflow_training',
     postgres_conn_id = 'gddconnection',
     google_cloud_storage_conn_id = 'google_cloud_storage_default',
     sql = 'select transfer_date FROM land_registry_price_paid_uk WHERE transfer_date = {{ execution_date.strftime("%d-%m-%Y") }}',
     dag=dag)
-
-
-
-
-# print_weekday = PythonOperator(
-#     task_id="print_weekday",
-#     python_callable=_print_weekday,
-#     provide_context=True,
-#     dag=dag,
-# )
-#
-# final_task = DummyOperator(task_id="final_task",
-#                           dag=dag)
-#
-# branching = BranchPythonOperator(
-#     task_id='branching',
-#     python_callable=return_branch,
-#     provide_context=True,
-#     dag=dag)
-#
-# people = ['bob', 'alice', 'joe']
-# emails_tasks_array = []
-# for i in people:
-#     email = DummyOperator(
-#         task_id='email_' + str(i),
-#         dag=dag,
-#     )
-#     emails_tasks_array.append(email)
-#
-#     # branching >> email >> final_task
-#
-#
-# print_weekday >> branching >> emails_tasks_array >> final_task
-
