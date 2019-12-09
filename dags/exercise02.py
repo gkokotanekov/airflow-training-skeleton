@@ -8,7 +8,7 @@ from airflow.operators.dummy_operator import DummyOperator
 
 args = {
     'owner': 'Airflow',
-    'start_date': datetime(2019, 10, 1),
+    'start_date': datetime(2019, 12, 1),
     'dagrun_timeout': timedelta(minutes=60)
 }
 
@@ -16,7 +16,9 @@ dag = DAG(
     dag_id='example03',
     default_args=args,
     # schedule_interval='0 0 * * *' ## every day
+    # schedule_interval='@daily' ## every day
     schedule_interval='45 13 * *  MON,WED,FRI' ## every day
+    # schedule_interval= timedelta(hours=2, minutes=30)  ## every 2.5 hours; difficult in crone
 
 )
 
