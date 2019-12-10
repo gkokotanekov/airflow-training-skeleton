@@ -56,7 +56,7 @@ class LaunchHook(BaseHook):
 args = {"owner": "godatadriven", "start_date": airflow.utils.dates.days_ago(10)}
 
 dag = DAG(
-    dag_id="download_rocket_launches03",
+    dag_id="download_rocket_launches04",
     default_args=args,
     description="DAG downloading rocket launches from Launch Library.",
     schedule_interval="0 0 * * *",
