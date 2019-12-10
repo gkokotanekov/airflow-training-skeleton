@@ -65,7 +65,7 @@ dag = DAG(
 
 class LaunchToGcsOperator(BaseOperator):
 
-    template_fields = ('start_date', 'end_date', 'python_path')
+    template_fields = ('_start_date', '_end_date', '_python_path')
 
     @apply_defaults
     def __init__(self, start_date, output_bucket, output_path, end_date=None,
