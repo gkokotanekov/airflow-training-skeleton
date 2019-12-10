@@ -20,7 +20,7 @@ from sys import api_version
 class LaunchHook(BaseHook):
     base_url = 'https://launchlibrary.net'
 
-    def __init__(self, conn_id):
+    def __init__(self, conn_id=None, api_version=1.4):
         super().__init__(source=None)
         self._conn_id = conn_id
         self._api_version = api_version
@@ -56,7 +56,7 @@ class LaunchHook(BaseHook):
 args = {"owner": "godatadriven", "start_date": airflow.utils.dates.days_ago(10)}
 
 dag = DAG(
-    dag_id="download_rocket_launches02",
+    dag_id="download_rocket_launches03",
     default_args=args,
     description="DAG downloading rocket launches from Launch Library.",
     schedule_interval="0 0 * * *",
