@@ -8,7 +8,6 @@ from airflow.utils.decorators import apply_defaults
 
 from hooks.launch_hook import LaunchHook
 
-
 class LaunchToGcsOperator(BaseOperator):
     template_fields = ("_start_date", "_end_date", "_output_path")
 
