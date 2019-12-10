@@ -116,10 +116,12 @@ class LaunchToGcsOperator(BaseOperator):
 
 get_stats = LaunchToGcsOperator(
     task_id='get_stats',
-    start_date={{ds}},
+    start_date='2019-12-08',
     output_bucket='gkokotanekov_airflow_training',
-    output_path='launches/{{ds}}.json',
-    end_date={{tomorrow_ds}},
+    # output_path='launches/{{ds}}.json',
+    output_path='launches/myjson.json',
+    end_date='2019-12-08',
+    # end_date={{tomorrow_ds}},
     # launch_conn_id = ''
     provide_context=True,
     dag=dag
