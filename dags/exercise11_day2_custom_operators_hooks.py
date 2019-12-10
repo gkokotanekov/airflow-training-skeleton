@@ -13,14 +13,11 @@ from airflow.models import DAG, BaseOperator
 from airflow.operators.python_operator import PythonOperator
 from airflow.utils.decorators import apply_defaults
 
-
-
 # class LaunchHook(HttpHook):
 from sys import api_version
 
 
 class LaunchHook(BaseHook):
-
     base_url = 'https://launchlibrary.net'
 
     def __init__(self, conn_id):
@@ -38,7 +35,7 @@ class LaunchHook(BaseHook):
         session = self.get_conn()
         response = session.get(
             "{self.base_url}/{self._api_version}/launches",
-            params = {"start_date": start_date, "end_date" : end_date }
+            params={"start_date": start_date, "end_date": end_date}
         )
         response.raise_for_status()
         return response.json()["launches"]
@@ -69,8 +66,8 @@ dag = DAG(
 class LaunchToGcsOperator(BaseOperator):
 
     @apply_defaults
-    def __init__(self, start_date, output_bucket, output_path, end_date = None,
-                 launch_conn_id = None, gcp_conn_id = "google_cloud_default" , **kwargs):
+    def __init__(self, start_date, output_bucket, output_path, end_date=None,
+                 launch_conn_id=None, gcp_conn_id="google_cloud_default", **kwargs):
         super().__init__(**kwargs)
         self._output_bucket = output_bucket
         self._output_path = output_path
@@ -81,9 +78,7 @@ class LaunchToGcsOperator(BaseOperator):
         self._launch_conn_id = launch_conn_id
         self._gcp_conn_id = gcp_conn_id
 
-
     def execute(self, context):
-
         self.log.info("Fetching log date")
         launch_hook = LaunchHook(conn_id=self._launch_conn_id)
         result = launch_hook.get_launches(
@@ -106,6 +101,7 @@ class LaunchToGcsOperator(BaseOperator):
                 filename=tmp_path
             )
 
+
 # def _print_stats(ds, **context):
 #     with open(f"/data/rocket_launches/ds={ds}/launches.json") as f:
 #         data = json.load(f)
@@ -116,17 +112,16 @@ class LaunchToGcsOperator(BaseOperator):
 #             print(f"{len(rockets_launched)} rocket launch(es) on {ds}{rockets_str}.")
 
 
-
 get_stats = LaunchToGcsOperator(
-    start_date = '2019-12-08',
-    output_bucket = 'gkokotanekov_airflow_training',
-    output_path = 'stats_data{{ds}}_{}',
-    end_date = '2019-12-10',
+    task_id='get_stats',
+    start_date='2019-12-08',
+    output_bucket='gkokotanekov_airflow_training',
+    output_path='stats_data{{ds}}_{}',
+    end_date='2019-12-10',
     # launch_conn_id = ''
     provide_context=True,
-    dag=dag,
+    dag=dag
 )
-
 
 # download_rocket_launches = PythonOperator(
 #     task_id="download_rocket_launches",
