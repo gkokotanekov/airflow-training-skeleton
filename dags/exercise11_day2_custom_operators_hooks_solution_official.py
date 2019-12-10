@@ -1,46 +1,26 @@
-import json
-import pathlib
-import posixpath
 import airflow
-import requests
 from airflow.models import DAG
-from airflow.operators.python_operator import PythonOperator
 
-args = {"owner": "godatadriven", "start_date": airflow.utils.dates.days_ago(10)}
-dag = DAG(
-    dag_id="download_rocket_launches",
-    default_args=args,
-    description="DAG downloading rocket launches from Launch Library.",
-    schedule_interval="0 0 * * *",
-)
+from operators.launch_operator import LaunchToGcsOperator
 
 
-def _download_rocket_launches(ds, tomorrow_ds, **context):
-    query = f"https://launchlibrary.net/1.4/launch?startdate={ds}&enddate={tomorrow_ds}"
-    result_path = f"/data/rocket_launches/ds={ds}"
-    pathlib.Path(result_path).mkdir(parents=True, exist_ok=True)
-    response = requests.get(query)
-    with open(posixpath.join(result_path, "launches.json"), "w") as f:
-        f.write(response.text)
+args = {
+    "owner": "your name",
+    "start_date": airflow.utils.dates.days_ago(14)
+}
 
+with DAG(
+        dag_id="exercise-launch",
+        default_args=args,
+        schedule_interval="0 0 * * *"
+) as dag:
+    output_bucket = "airflow-training-data-jrderuiter"
+    output_path = "launches/{{ ds }}.json"
 
-def _print_stats(ds, **context):
-    with open(f"/data/rocket_launches/ds={ds}/launches.json") as f:
-        data = json.load(f)
-        rockets_launched = [launch["name"] for launch in data["launches"]]
-        rockets_str = ""
-        if rockets_launched:
-            rockets_str = f" ({' & '.join(rockets_launched)})"
-            print(f"{len(rockets_launched)} rocket launch(es) on {ds}{rockets_str}.")
-
-
-download_rocket_launches = PythonOperator(
-    task_id="download_rocket_launches",
-    python_callable=_download_rocket_launches,
-    provide_context=True,
-    dag=dag,
-)
-print_stats = PythonOperator(
-    task_id="print_stats", python_callable=_print_stats, provide_context=True, dag=dag
-)
-download_rocket_launches >> print_stats
+    LaunchToGcsOperator(
+        task_id="launch_to_gcs",
+        start_date="{{ds}}",
+        end_date="{{tomorrow_ds}}",
+        output_bucket=output_bucket,
+        output_path=output_path,
+    )
