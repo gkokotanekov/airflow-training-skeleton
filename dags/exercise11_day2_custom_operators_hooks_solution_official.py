@@ -10,7 +10,7 @@ args = {
 }
 
 with DAG(
-        dag_id="exercise-launch",
+        dag_id="exercise-launch02",
         default_args=args,
         schedule_interval="0 0 * * *"
 ) as dag:
