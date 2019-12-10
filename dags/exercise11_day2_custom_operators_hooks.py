@@ -65,6 +65,8 @@ dag = DAG(
 
 class LaunchToGcsOperator(BaseOperator):
 
+    template_fields = ('start_date', 'end_date', 'python_path')
+
     @apply_defaults
     def __init__(self, start_date, output_bucket, output_path, end_date=None,
                  launch_conn_id=None, gcp_conn_id="google_cloud_default", **kwargs):
@@ -114,10 +116,10 @@ class LaunchToGcsOperator(BaseOperator):
 
 get_stats = LaunchToGcsOperator(
     task_id='get_stats',
-    start_date='2019-12-08',
+    start_date={{ds}},
     output_bucket='gkokotanekov_airflow_training',
-    output_path='stats_data{{ds}}_{}',
-    end_date='2019-12-10',
+    output_path='launches/{{ds}}.json',
+    end_date={{tomorrow_ds}},
     # launch_conn_id = ''
     provide_context=True,
     dag=dag
